@@ -1,0 +1,1275 @@
+<!doctype html>
+<html lang="en" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevPrep | Software Engineering Exam Practice - Module 1</title>
+    <!-- External CSS File -->
+  <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2563eb",
+              secondary: "#475569",
+              success: "#10b981",
+              danger: "#ef4444",
+              warning: "#f59e0b",
+              darkbg: "#0f172a",
+              darkcard: "#1e293b",
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-slate-50 text-slate-800 dark:bg-darkbg dark:text-slate-200 transition-colors duration-300 min-h-screen flex flex-col"
+  >
+    <!-- Navigation / Header -->
+    <nav
+      class="bg-white dark:bg-darkcard border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50 shadow-sm"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/30"
+            >
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div>
+              <h1 class="font-bold text-lg leading-tight">DevPrep</h1>
+              <p class="text-xs text-slate-500 dark:text-slate-400">
+                Software Engineering Exam Practice
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <!-- Review Book Button -->
+            <button
+              id="reviewBookBtn"
+              onclick="app.showReviewBook()"
+              class="hidden p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-500 dark:text-slate-400"
+              title="SAD Review Book"
+            >
+              <i class="fa-solid fa-book"></i>
+            </button>
+
+            <!-- Theme Toggle -->
+            <button
+              id="themeToggle"
+              class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-500 dark:text-slate-400"
+            >
+              <i class="fa-solid fa-moon dark:hidden"></i>
+              <i class="fa-solid fa-sun hidden dark:block"></i>
+            </button>
+
+            <!-- User Info (Hidden on Login) -->
+            <div
+              id="navUserInfo"
+              class="hidden md:flex items-center gap-3 text-sm border-l pl-4 border-slate-200 dark:border-slate-700"
+            >
+              <div class="text-right hidden sm:block">
+                <div id="navStudentName" class="font-semibold">Guest</div>
+                <div id="navStudentId" class="text-xs text-slate-500">--</div>
+              </div>
+              <div
+                class="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-300"
+              >
+                <i class="fa-solid fa-user"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main
+      id="appContainer"
+      class="flex-grow container mx-auto px-4 py-8 max-w-6xl relative"
+    >
+      <!-- VIEW: LOGIN -->
+      <section id="view-login" class="fade-in max-w-md mx-auto mt-10">
+        <div
+          class="bg-white dark:bg-darkcard rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden"
+        >
+          <div class="p-8 border-b border-slate-100 dark:border-slate-700">
+            <div class="text-center">
+              <h2 class="text-2xl font-bold text-slate-800 dark:text-white">
+                Student Login
+              </h2>
+              <p class="text-slate-500 dark:text-slate-400 mt-1">
+                Enter your credentials to start the exam
+              </p>
+            </div>
+          </div>
+          <form
+            id="loginForm"
+            class="p-8 space-y-6"
+            onsubmit="
+              app.login();
+              return false;
+            "
+          >
+            <div>
+              <label
+                class="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300"
+                >Student Name</label
+              >
+              <div class="relative">
+                <i
+                  class="fa-solid fa-user absolute left-3 top-3.5 text-slate-400"
+                ></i>
+                <input
+                  type="text"
+                  id="loginName"
+                  class="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                  placeholder="e.g. John Doe"
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300"
+                >Student ID</label
+              >
+              <div class="relative">
+                <i
+                  class="fa-solid fa-id-card absolute left-3 top-3.5 text-slate-400"
+                ></i>
+                <input
+                  type="text"
+                  id="loginId"
+                  class="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                  placeholder="e.g. 2023-001"
+                />
+              </div>
+            </div>
+            <button
+              type="submit"
+              class="w-full bg-primary hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg shadow-blue-500/30 transition-all transform hover:-translate-y-0.5"
+            >
+              Start Exam
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- VIEW: CATEGORY SELECTION -->
+      <section id="view-category" class="hidden fade-in max-w-4xl mx-auto">
+        <div
+          class="bg-white dark:bg-darkcard rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden"
+        >
+          <div
+            class="p-8 border-b border-slate-100 dark:border-slate-700 text-center"
+          >
+            <h2 class="text-3xl font-bold text-slate-800 dark:text-white">
+              Select Exam Category
+            </h2>
+            <p class="text-slate-500 dark:text-slate-400 mt-2">
+              Choose which exam you want to take today
+            </p>
+          </div>
+          <div class="p-8 grid md:grid-cols-2 gap-6">
+            <!-- SAD Exam Card -->
+            <button
+              onclick="app.selectCategory('sad')"
+              class="group p-8 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-2 border-blue-200 dark:border-blue-700 rounded-2xl hover:shadow-lg transition-all transform hover:-translate-y-1"
+            >
+              <div class="flex flex-col items-center">
+                <div
+                  class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white text-2xl mb-4"
+                >
+                  <i class="fa-solid fa-brain"></i>
+                </div>
+                <h3
+                  class="text-2xl font-bold text-blue-900 dark:text-blue-300 mb-2"
+                >
+                  System Analysis & Design
+                </h3>
+                <p class="text-blue-700 dark:text-blue-400 mb-4 text-sm">
+                  Professional exam on systems design principles
+                </p>
+                <div
+                  class="inline-block px-4 py-2 bg-blue-500 text-white rounded-lg font-bold text-sm"
+                >
+                  50 Questions • 30 min
+                </div>
+              </div>
+            </button>
+            <!-- HTML & CSS Exam Card -->
+            <button
+              onclick="app.selectCategory('html')"
+              class="group p-8 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 border-2 border-orange-200 dark:border-orange-700 rounded-2xl hover:shadow-lg transition-all transform hover:-translate-y-1"
+            >
+              <div class="flex flex-col items-center">
+                <div
+                  class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center text-white text-2xl mb-4"
+                >
+                  <i class="fa-solid fa-code"></i>
+                </div>
+                <h3
+                  class="text-2xl font-bold text-orange-900 dark:text-orange-300 mb-2"
+                >
+                  HTML & CSS Certification
+                </h3>
+                <p class="text-orange-700 dark:text-orange-400 mb-4 text-sm">
+                  Certification exam on web development fundamentals
+                </p>
+                <div
+                  class="inline-block px-4 py-2 bg-orange-500 text-white rounded-lg font-bold text-sm"
+                >
+                  80 Questions • 45 min
+                </div>
+              </div>
+            </button>
+          </div>
+          <div
+            class="bg-slate-50 dark:bg-slate-800/50 p-4 text-center text-xs text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700"
+          >
+            <button
+              onclick="app.logout()"
+              class="text-primary hover:underline font-medium"
+            >
+              ← Back to Login
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: DASHBOARD -->
+      <section id="view-dashboard" class="hidden fade-in max-w-4xl mx-auto">
+        <div
+          class="bg-white dark:bg-darkcard rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden"
+        >
+          <div
+            class="p-8 border-b border-slate-100 dark:border-slate-700 flex flex-col md:flex-row justify-between items-center gap-6"
+          >
+            <div>
+              <h2
+                class="text-2xl font-bold text-slate-800 dark:text-white"
+                id="dashTitle"
+              >
+                Exam Dashboard
+              </h2>
+              <p
+                class="text-slate-500 dark:text-slate-400 mt-1"
+                id="dashSubtitle"
+              >
+                Review your exam details before starting.
+              </p>
+            </div>
+            <button
+              onclick="app.changeCategory()"
+              class="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 rounded-lg font-medium transition-colors"
+            >
+              <i class="fa-solid fa-arrow-left mr-2"></i> Change Category
+            </button>
+            <div class="flex gap-3">
+              <div
+                class="text-center px-4 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-800"
+              >
+                <div
+                  class="text-xs text-blue-600 dark:text-blue-400 font-semibold uppercase tracking-wider"
+                >
+                  Questions
+                </div>
+                <div
+                  class="text-xl font-bold text-blue-700 dark:text-blue-300"
+                  id="dashQuestionCount"
+                >
+                  50
+                </div>
+              </div>
+              <div
+                class="text-center px-4 py-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-100 dark:border-purple-800"
+              >
+                <div
+                  class="text-xs text-purple-600 dark:text-purple-400 font-semibold uppercase tracking-wider"
+                >
+                  Duration
+                </div>
+                <div
+                  class="text-xl font-bold text-purple-700 dark:text-purple-300"
+                  id="dashDuration"
+                >
+                  30m
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-8 grid md:grid-cols-2 gap-8">
+            <div class="space-y-4">
+              <h3
+                class="font-semibold text-lg border-b pb-2 border-slate-100 dark:border-slate-700"
+              >
+                Student Information
+              </h3>
+              <div
+                class="flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl"
+              >
+                <div
+                  class="h-12 w-12 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xl"
+                >
+                  <i class="fa-solid fa-user-graduate"></i>
+                </div>
+                <div>
+                  <div id="dashName" class="font-bold text-lg">--</div>
+                  <div id="dashId" class="text-sm text-slate-500">--</div>
+                </div>
+              </div>
+
+              <div
+                class="p-4 bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-100 dark:border-yellow-800/30 rounded-xl text-sm text-yellow-800 dark:text-yellow-200"
+              >
+                <div class="flex items-start gap-3">
+                  <i class="fa-solid fa-circle-info mt-0.5"></i>
+                  <div>
+                    <strong>Instructions:</strong>
+                    <ul class="list-disc ml-4 mt-1 space-y-1 opacity-90">
+                      <li>Do not refresh the page during the exam.</li>
+                      <li>
+                        Timer will start immediately upon clicking "Start".
+                      </li>
+                      <li>You can flag questions to review later.</li>
+                      <li>Auto-submit occurs when time runs out.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="flex flex-col justify-center items-center bg-slate-50 dark:bg-slate-800/50 rounded-xl p-6 border border-dashed border-slate-300 dark:border-slate-700"
+            >
+              <div class="text-center mb-6">
+                <h3 class="font-bold text-xl mb-2">Ready to begin?</h3>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">
+                  Make sure you are in a quiet environment.
+                </p>
+              </div>
+              <button
+                onclick="app.startExam()"
+                class="group relative px-8 py-4 bg-primary hover:bg-blue-700 text-white font-bold rounded-xl shadow-xl shadow-blue-500/30 transition-all w-full md:w-auto overflow-hidden"
+              >
+                <span
+                  class="relative z-10 flex items-center justify-center gap-2"
+                >
+                  Start Exam Now
+                  <i
+                    class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"
+                  ></i>
+                </span>
+                <div
+                  class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+                ></div>
+              </button>
+            </div>
+          </div>
+
+          <div class="p-8 border-t border-slate-100 dark:border-slate-700">
+            <h3 class="font-bold text-lg mb-3">Search Your Exam History</h3>
+            <div
+              class="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4"
+            >
+              <input
+                type="text"
+                id="dashHistoryName"
+                class="w-full sm:w-80 px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary outline-none transition-all"
+                placeholder="Enter your name to view records"
+                oninput="
+                  app.renderRecordHistory(
+                    this.value,
+                    'dashboard-record-history',
+                    app.getCurrentSort(),
+                  )
+                "
+              />
+              <button
+                onclick="
+                  app.renderRecordHistory(
+                    document.getElementById('dashHistoryName').value,
+                    'dashboard-record-history',
+                    app.getCurrentSort(),
+                  )
+                "
+                class="px-4 py-2 bg-primary hover:bg-blue-700 text-white rounded-lg font-semibold"
+              >
+                Search
+              </button>
+            </div>
+            <div
+              class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-4"
+            >
+              <div class="flex items-center gap-2">
+                <label class="text-sm font-medium">Sort by:</label>
+                <label class="flex items-center gap-1">
+                  <input
+                    type="radio"
+                    name="sort-history"
+                    value="date"
+                    checked
+                    onchange="
+                      app.renderRecordHistory(
+                        document.getElementById('dashHistoryName').value,
+                        'dashboard-record-history',
+                        'date',
+                      )
+                    "
+                  />
+                  Date
+                </label>
+                <label class="flex items-center gap-1">
+                  <input
+                    type="radio"
+                    name="sort-history"
+                    value="score"
+                    onchange="
+                      app.renderRecordHistory(
+                        document.getElementById('dashHistoryName').value,
+                        'dashboard-record-history',
+                        'score',
+                      )
+                    "
+                  />
+                  Score
+                </label>
+              </div>
+              <button
+                onclick="
+                  app.clearMyHistory(
+                    document.getElementById('dashHistoryName').value,
+                  )
+                "
+                class="px-4 py-2 bg-danger hover:bg-red-700 text-white rounded-lg font-semibold"
+              >
+                Clear My History
+              </button>
+            </div>
+            <div id="dashboard-record-history" class="space-y-2"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: EXAM -->
+      <section
+        id="view-exam"
+        class="hidden fade-in h-full flex flex-col lg:flex-row gap-6"
+      >
+        <!-- Left: Question Area -->
+        <div class="flex-1 flex flex-col gap-4">
+          <!-- Timer Bar -->
+          <div
+            class="bg-white dark:bg-darkcard p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 flex justify-between items-center sticky top-20 z-40"
+          >
+            <div class="flex items-center gap-2">
+              <span
+                class="text-sm font-medium text-slate-500 dark:text-slate-400"
+                >Question</span
+              >
+              <span id="q-current-num" class="text-xl font-bold text-primary"
+                >1</span
+              >
+              <span class="text-slate-400">/</span>
+              <span class="text-sm text-slate-500" id="q-total-num">50</span>
+            </div>
+            <div
+              id="timer-display"
+              class="font-mono text-xl font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2"
+            >
+              <i class="fa-regular fa-clock"></i> <span>30:00</span>
+            </div>
+          </div>
+
+          <!-- Question Card -->
+          <div
+            class="bg-white dark:bg-darkcard rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 md:p-8 flex-grow slide-in"
+          >
+            <div class="mb-6">
+              <span
+                class="inline-block px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-xs font-bold text-slate-500 dark:text-slate-400 mb-4 uppercase tracking-wide"
+                >Multiple Choice</span
+              >
+              <h3
+                id="q-text"
+                class="text-xl md:text-2xl font-bold leading-relaxed text-slate-800 dark:text-slate-100"
+              >
+                <!-- Question Text Injected Here -->
+              </h3>
+            </div>
+
+            <div id="q-options" class="space-y-3">
+              <!-- Options Injected Here -->
+            </div>
+          </div>
+
+          <!-- Action Bar -->
+          <div class="flex justify-between items-center pt-2">
+            <button
+              onclick="app.prevQuestion()"
+              id="btn-prev"
+              class="px-6 py-3 rounded-lg border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <i class="fa-solid fa-arrow-left mr-2"></i> Previous
+            </button>
+
+            <button
+              onclick="app.toggleFlag()"
+              id="btn-flag"
+              class="px-4 py-3 rounded-lg text-slate-500 hover:text-warning hover:bg-yellow-50 dark:hover:bg-yellow-900/20 font-medium transition-colors"
+            >
+              <i class="fa-regular fa-flag mr-2"></i> Flag for Review
+            </button>
+
+            <button
+              onclick="app.nextQuestion()"
+              id="btn-next"
+              class="px-6 py-3 rounded-lg bg-primary hover:bg-blue-700 text-white font-medium shadow-md transition-colors"
+            >
+              Next <i class="fa-solid fa-arrow-right ml-2"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Sidebar Navigator -->
+        <div class="w-full lg:w-80 flex-shrink-0">
+          <div
+            class="bg-white dark:bg-darkcard rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 sticky top-20"
+          >
+            <h3 class="font-bold text-lg mb-4">Question Navigator</h3>
+
+            <!-- Legend -->
+            <div
+              class="grid grid-cols-2 gap-2 text-xs mb-6 text-slate-500 dark:text-slate-400"
+            >
+              <div class="flex items-center gap-2">
+                <div
+                  class="w-3 h-3 rounded bg-slate-200 dark:bg-slate-700"
+                ></div>
+                Unanswered
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded bg-primary"></div>
+                Answered
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded bg-warning"></div>
+                Flagged
+              </div>
+              <div class="flex items-center gap-2">
+                <div
+                  class="w-3 h-3 rounded border-2 border-slate-800 dark:border-white"
+                ></div>
+                Current
+              </div>
+            </div>
+
+            <!-- Grid -->
+            <div
+              id="q-grid"
+              class="grid grid-cols-5 gap-2 mb-6 max-h-[300px] overflow-y-auto p-1"
+            >
+              <!-- Grid Items Injected Here -->
+            </div>
+
+            <!-- Progress -->
+            <div class="mb-6">
+              <div class="flex justify-between text-sm font-medium mb-2">
+                <span>Progress</span>
+                <span id="progress-text">0%</span>
+              </div>
+              <div
+                class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5"
+              >
+                <div
+                  id="progress-bar"
+                  class="bg-primary h-2.5 rounded-full transition-all duration-500"
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+
+            <button
+              onclick="app.submitExam()"
+              class="w-full py-3 bg-success hover:bg-green-700 text-white font-bold rounded-xl shadow-lg shadow-green-500/30 transition-all transform active:scale-95"
+            >
+              Submit Exam
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: RESULTS -->
+      <section id="view-results" class="hidden fade-in max-w-3xl mx-auto">
+        <div
+          class="bg-white dark:bg-darkcard rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden text-center"
+        >
+          <div class="p-10">
+            <div
+              class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-slate-100 dark:bg-slate-800 mb-6 relative"
+            >
+              <svg
+                class="w-full h-full transform -rotate-90"
+                viewBox="0 0 100 100"
+              >
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="8"
+                  class="text-slate-200 dark:text-slate-700"
+                />
+                <circle
+                  id="score-circle"
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="8"
+                  class="text-primary"
+                  stroke-dasharray="283"
+                  stroke-dashoffset="283"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <div
+                class="absolute inset-0 flex items-center justify-center flex-col"
+              >
+                <span id="score-percent" class="text-2xl font-bold">0%</span>
+              </div>
+            </div>
+
+            <h2 class="text-3xl font-bold mb-2">Exam Completed!</h2>
+            <p id="pass-fail-msg" class="text-xl font-medium mb-8">--</p>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                <div class="text-xs text-slate-500 uppercase">Score</div>
+                <div id="res-score" class="text-xl font-bold">0/50</div>
+              </div>
+              <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                <div class="text-xs text-slate-500 uppercase">Correct</div>
+                <div id="res-correct" class="text-xl font-bold text-success">
+                  0
+                </div>
+              </div>
+              <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                <div class="text-xs text-slate-500 uppercase">Incorrect</div>
+                <div id="res-incorrect" class="text-xl font-bold text-danger">
+                  0
+                </div>
+              </div>
+              <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                <div class="text-xs text-slate-500 uppercase">Time Taken</div>
+                <div id="res-time" class="text-xl font-bold">--</div>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onclick="app.reviewExam()"
+                class="px-8 py-3 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-white font-bold rounded-xl transition-colors"
+              >
+                <i class="fa-solid fa-list-check mr-2"></i> Review Answers
+              </button>
+              <button
+                onclick="app.restart()"
+                class="px-8 py-3 bg-primary hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-500/30 transition-colors"
+              >
+                <i class="fa-solid fa-rotate-right mr-2"></i> Restart Exam
+              </button>
+            </div>
+
+            <div class="mt-8 text-left">
+              <h3 class="font-bold text-lg mb-2">Exam History (Latest 20)</h3>
+              <div id="record-history" class="space-y-2"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: REVIEW -->
+      <section id="view-review" class="hidden fade-in max-w-4xl mx-auto pb-20">
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-2xl font-bold">Answer Review</h2>
+          <button
+            onclick="app.showResults()"
+            class="text-primary font-medium hover:underline"
+          >
+            Back to Results
+          </button>
+        </div>
+        <div id="review-container" class="space-y-6">
+          <!-- Review Items Injected Here -->
+        </div>
+      </section>
+
+      <!-- VIEW: REVIEW BOOK -->
+      <section
+        id="view-review-book"
+        class="hidden fade-in max-w-4xl mx-auto pb-20"
+      >
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-3xl font-bold text-slate-800 dark:text-white">
+            📘 SYSTEM ANALYSIS AND DESIGN (SAD) – REVIEW BOOK
+          </h2>
+          <button
+            onclick="app.backToCategory()"
+            class="text-primary font-medium hover:underline"
+          >
+            Back to Categories
+          </button>
+        </div>
+        <div class="space-y-8">
+          <div
+            class="bg-white dark:bg-darkcard rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6"
+          >
+            <h3
+              class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4"
+            >
+              CHAPTER 1: INTRODUCTION TO SAD
+            </h3>
+            <p class="text-slate-600 dark:text-slate-300 mb-2">
+              System Analysis and Design is a structured process used to develop
+              information systems.
+            </p>
+            <ul class="list-disc ml-6 text-slate-600 dark:text-slate-300">
+              <li>
+                System Analysis: focuses on understanding the problem and
+                requirements
+              </li>
+              <li>System Design: focuses on creating the solution</li>
+            </ul>
+            <p class="mt-2 font-semibold">
+              Key idea: Analysis = What is needed; Design = How it will be done
+            </p>
+          </div>
+          <div
+            class="bg-white dark:bg-darkcard rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6"
+          >
+            <h3
+              class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4"
+            >
+              CHAPTER 2: INFORMATION SYSTEMS
+            </h3>
+            <p class="text-slate-600 dark:text-slate-300 mb-2">
+              An information system is a collection of components that collect,
+              process, store, and output information to support decision-making.
+            </p>
+            <ul class="list-disc ml-6 text-slate-600 dark:text-slate-300">
+              <li>Hardware – physical devices</li>
+              <li>Software – programs and applications</li>
+              <li>Data – raw facts turned into information</li>
+              <li>Processes – procedures and operations</li>
+              <li>People – users and IT professionals</li>
+            </ul>
+          </div>
+          <div
+            class="bg-white dark:bg-darkcard rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6"
+          >
+            <h3
+              class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4"
+            >
+              CHAPTER 3: SYSTEM ANALYST
+            </h3>
+            <ul class="list-disc ml-6 text-slate-600 dark:text-slate-300">
+              <li>Understands business problems</li>
+              <li>Designs IT solutions</li>
+              <li>Acts as a bridge between users and developers</li>
+              <li>
+                Key roles: requirements gathering, problem solving, stakeholder
+                communication, design support
+              </li>
+            </ul>
+          </div>
+          <div
+            class="bg-white dark:bg-darkcard rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6"
+          >
+            <h3
+              class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4"
+            >
+              CHAPTER 4: SDLC
+            </h3>
+            <ul class="list-decimal ml-6 text-slate-600 dark:text-slate-300">
+              <li>Planning</li>
+              <li>Analysis</li>
+              <li>Design</li>
+              <li>Implementation</li>
+              <li>Support/Maintenance</li>
+            </ul>
+          </div>
+          <div
+            class="bg-white dark:bg-darkcard rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6"
+          >
+            <h3
+              class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4"
+            >
+              CHAPTER 5: FEASIBILITY STUDY
+            </h3>
+            <ul class="list-disc ml-6 text-slate-600 dark:text-slate-300">
+              <li>Technical, Economic, Operational, Schedule</li>
+            </ul>
+          </div>
+          <div
+            class="bg-white dark:bg-darkcard rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6"
+          >
+            <h3
+              class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4"
+            >
+              CHAPTER 6: SYSTEM DEVELOPMENT METHODOLOGIES
+            </h3>
+            <div class="space-y-3 text-slate-600 dark:text-slate-300">
+              <div>
+                <strong>Waterfall Model</strong> - Sequential step-by-step, each
+                phase completes before next. Advantages: Clear structure.
+                Disadvantages: Hard to change requirements.
+              </div>
+              <div>
+                <strong>RAD</strong> - Rapid Application Development, fast
+                delivery, tool-based prototyping, user feedback. Advantages:
+                Quick delivery. Disadvantages: Can miss details.
+              </div>
+              <div>
+                <strong>Prototyping</strong> - Build a small version first.
+                Advantages: Early feedback. Disadvantages: Risk of poor design.
+              </div>
+              <div>
+                <strong>Agile Development</strong> - Iterative, repeated cycles,
+                flexible/adaptive. Advantages: Handles change well.
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white dark:bg-darkcard rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6"
+          >
+            <h3
+              class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4"
+            >
+              CHAPTER 7: REQUIREMENTS GATHERING
+            </h3>
+            <ul class="list-disc ml-6 text-slate-600 dark:text-slate-300">
+              <li>Interviews</li>
+              <li>Questionnaires</li>
+              <li>Observation</li>
+              <li>Document review</li>
+              <li>Sampling</li>
+              <li>Research</li>
+            </ul>
+            <p class="mt-2 font-semibold">
+              👉 Exam Tip: Compare any two methods
+            </p>
+          </div>
+
+          <div
+            class="bg-white dark:bg-darkcard rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6"
+          >
+            <h3
+              class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4"
+            >
+              CHAPTER 8: SYSTEM MODELING
+            </h3>
+            <ul class="list-disc ml-6 text-slate-600 dark:text-slate-300">
+              <li>
+                Data Flow Diagram (DFD) - Shows how data moves in a system.
+              </li>
+              <li>Data Dictionary - Stores definitions of data.</li>
+              <li>Process Description Tools:</li>
+              <ul class="list-disc ml-8">
+                <li>Structured English</li>
+                <li>Decision Tables</li>
+                <li>Decision Trees</li>
+              </ul>
+            </ul>
+          </div>
+
+          <div
+            class="bg-white dark:bg-darkcard rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6"
+          >
+            <h3
+              class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4"
+            >
+              CHAPTER 9: OBJECT-ORIENTED APPROACH
+            </h3>
+            <ul class="list-disc ml-6 text-slate-600 dark:text-slate-300">
+              <li>Object – real-world entity</li>
+              <li>Class – group of objects</li>
+              <li>Attribute – properties</li>
+              <li>Method – actions</li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-white dark:bg-darkcard rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6"
+          >
+            <h3
+              class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4"
+            >
+              CHAPTER 10: UML
+            </h3>
+            <p class="text-slate-600 dark:text-slate-300">
+              Purpose: Used to visually represent system design.
+            </p>
+            <ul class="list-disc ml-6 text-slate-600 dark:text-slate-300">
+              <li>Structural Diagrams: Class diagram</li>
+              <li>Behavioral Diagrams: Use case diagram</li>
+              <li>Interaction Diagrams: Sequence diagram</li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-white dark:bg-darkcard rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6"
+          >
+            <h3
+              class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4"
+            >
+              CHAPTER 11: SYSTEM DESIGN
+            </h3>
+            <ul class="list-disc ml-6 text-slate-600 dark:text-slate-300">
+              <li>User Interface Design</li>
+              <li>Database Design</li>
+              <li>System Architecture</li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-white dark:bg-darkcard rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6"
+          >
+            <h3
+              class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4"
+            >
+              CHAPTER 12: SYSTEM IMPLEMENTATION
+            </h3>
+            <ul class="list-disc ml-6 text-slate-600 dark:text-slate-300">
+              <li>Coding</li>
+              <li>
+                Testing: Unit testing, Integration testing, System testing
+              </li>
+              <li>Installation</li>
+              <li>Training</li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-white dark:bg-darkcard rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6"
+          >
+            <h3
+              class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4"
+            >
+              CHAPTER 13: SYSTEM SUPPORT & MAINTENANCE
+            </h3>
+            <ul class="list-disc ml-6 text-slate-600 dark:text-slate-300">
+              <li>Corrective – fix errors</li>
+              <li>Adaptive – adapt to changes</li>
+              <li>Perfective – improve system</li>
+              <li>Preventive – avoid future problems</li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-gradient-to-r from-green-50 to-cyan-50 dark:from-green-900/20 dark:to-cyan-900/20 rounded-2xl p-6 border border-cyan-200 dark:border-cyan-700"
+          >
+            <h3
+              class="text-3xl font-bold text-green-700 dark:text-green-300 mb-4"
+            >
+              📘 HTML, CSS & JAVASCRIPT – REVIEW BOOK (DevPrep Edition)
+            </h3>
+            <div class="space-y-4 text-slate-700 dark:text-slate-300">
+              <h4 class="text-xl font-semibold">
+                🧩 CHAPTER 1: INTRODUCTION TO WEB DEVELOPMENT
+              </h4>
+              <p>What is a Website?</p>
+              <p>
+                A website is a collection of web pages accessible via the
+                internet.
+              </p>
+              <p>Core Technologies:</p>
+              <ul class="list-disc ml-6">
+                <li>HTML → Structure</li>
+                <li>CSS → Styling</li>
+                <li>JavaScript → Interactivity</li>
+              </ul>
+
+              <h4 class="text-xl font-semibold">
+                🧱 CHAPTER 2: HTML (HYPERTEXT MARKUP LANGUAGE)
+              </h4>
+              <p>
+                Definition: HTML is used to create the structure of web pages.
+              </p>
+              <p>Basic Structure:</p>
+              <pre
+                class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg overflow-x-auto text-sm"
+              ><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;DevPrep&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  Content goes here
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+              <p>Common Tags:</p>
+              <ul class="list-disc ml-6">
+                <li>&lt;h1&gt; - Heading</li>
+                <li>&lt;p&gt; - Paragraph</li>
+                <li>&lt;a&gt; - Link</li>
+                <li>&lt;img&gt; - Image</li>
+                <li>&lt;div&gt; - Block container</li>
+                <li>&lt;span&gt; - Inline container</li>
+              </ul>
+              <p>Semantic Tags (IMPORTANT ⚠️):</p>
+              <ul class="list-disc ml-6">
+                <li>&lt;header&gt;</li>
+                <li>&lt;main&gt;</li>
+                <li>&lt;section&gt;</li>
+                <li>&lt;footer&gt;</li>
+              </ul>
+              <p>👉 Improves structure and SEO</p>
+
+              <h4 class="text-xl font-semibold">🔹 Forms (VERY IMPORTANT)</h4>
+              <p>Used to collect user input:</p>
+              <ul class="list-disc ml-6">
+                <li>&lt;input type="text"&gt;</li>
+                <li>&lt;input type="radio"&gt;</li>
+                <li>&lt;input type="checkbox"&gt;</li>
+                <li>&lt;button&gt;Submit&lt;/button&gt;</li>
+              </ul>
+
+              <h4 class="text-xl font-semibold">
+                🎨 CHAPTER 3: CSS (CASCADING STYLE SHEETS)
+              </h4>
+              <p>Definition: CSS is used to style and design web pages.</p>
+              <p>CSS Syntax:</p>
+              <pre
+                class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg overflow-x-auto text-sm"
+              ><code>selector {
+  property: value;
+}</code></pre>
+              <p>Types of CSS: Inline, Internal, External (Best practice ✅)</p>
+              <p>Colors & Styling:</p>
+              <pre
+                class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg overflow-x-auto text-sm"
+              ><code>body {
+  background-color: #F8FAFC;
+}</code></pre>
+
+              <h4 class="text-xl font-semibold">
+                📦 CHAPTER 4: THE BOX MODEL (EXAM FAVORITE ⚠️)
+              </h4>
+              <p>Every element consists of:</p>
+              <ul class="list-disc ml-6">
+                <li>Content</li>
+                <li>Padding</li>
+                <li>Border</li>
+                <li>Margin</li>
+              </ul>
+              <p>👉 Controls spacing and layout</p>
+
+              <h4 class="text-xl font-semibold">
+                📐 CHAPTER 5: CSS LAYOUT (FLEXBOX)
+              </h4>
+              <p>Flexbox – used for layout and alignment</p>
+              <pre
+                class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg overflow-x-auto text-sm"
+              ><code>.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}</code></pre>
+              <p>
+                Key Properties: justify-content, align-items, flex-direction
+              </p>
+
+              <h4 class="text-xl font-semibold">
+                🖼 CHAPTER 6: IMAGES & LINKS
+              </h4>
+              <p>
+                Images:
+                <code>&lt;img src="image.jpg" alt="description"&gt;</code>
+              </p>
+              <p>👉 alt is important for accessibility ⚠️</p>
+              <p>
+                Links:
+                <code>&lt;a href="page.html"&gt;Go to page&lt;/a&gt;</code>
+              </p>
+
+              <h4 class="text-xl font-semibold">
+                ⚙️ CHAPTER 7: JAVASCRIPT (INTERACTIVITY)
+              </h4>
+              <p>Definition: JavaScript makes web pages interactive.</p>
+              <p>Example:</p>
+              <pre
+                class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg overflow-x-auto text-sm"
+              ><code>&lt;button onclick="showMessage()"&gt;Click&lt;/button&gt;
+
+&lt;script&gt;
+function showMessage() {
+  alert("Hello DevPrep!");
+}
+&lt;/script&gt;</code></pre>
+              <p>
+                Key Concepts: Variables, Functions, Events (onclick), Conditions
+                (if/else)
+              </p>
+
+              <h4 class="text-xl font-semibold">
+                🧠 CHAPTER 8: DOM (DOCUMENT OBJECT MODEL)
+              </h4>
+              <p>Definition: Allows JavaScript to interact with HTML</p>
+              <pre
+                class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg overflow-x-auto text-sm"
+              ><code>document.getElementById("demo").innerHTML = "Hello";</code></pre>
+
+              <h4 class="text-xl font-semibold">
+                🎯 CHAPTER 9: BUILDING A SIMPLE QUIZ SYSTEM
+              </h4>
+              <p>Steps:</p>
+              <ul class="list-disc ml-6">
+                <li>Display question (HTML)</li>
+                <li>Style interface (CSS)</li>
+                <li>Check answers (JavaScript)</li>
+              </ul>
+              <p>Example Logic:</p>
+              <pre
+                class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg overflow-x-auto text-sm"
+              ><code>function checkAnswer() {
+  let answer = document.getElementById("q1").value;
+
+  if (answer === "HTML") {
+    alert("Correct!");
+  } else {
+    alert("Wrong!");
+  }
+}</code></pre>
+
+              <h4 class="text-xl font-semibold">❗ KEY EXAM FOCUS AREAS</h4>
+              <ul class="list-disc ml-6">
+                <li>HTML structure</li>
+                <li>Forms and input types</li>
+                <li>CSS box model</li>
+                <li>Flexbox</li>
+                <li>JavaScript functions</li>
+                <li>DOM manipulation</li>
+              </ul>
+            </div>
+          </div>
+
+          <div
+            class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-6 border border-blue-200 dark:border-blue-700"
+          >
+            <h3
+              class="text-2xl font-bold text-blue-800 dark:text-blue-300 mb-4"
+            >
+              🎯 FINAL EXAM REVISION POINTS
+            </h3>
+            <ul class="list-disc ml-6 text-slate-700 dark:text-slate-300">
+              <li>SDLC phases</li>
+              <li>Feasibility types</li>
+              <li>System components</li>
+              <li>Methodologies (Waterfall, Agile, RAD)</li>
+              <li>System analyst role</li>
+              <li>DFD & UML</li>
+              <li>Fact-finding techniques</li>
+            </ul>
+            <div
+              class="mt-4 bg-yellow-100 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-300 dark:border-yellow-600"
+            >
+              <p class="text-yellow-800 dark:text-yellow-200 font-medium">
+                ⚡ FINAL ADVICE (FOR FRIDAY)
+              </p>
+              <ul
+                class="list-disc ml-6 mt-2 text-yellow-700 dark:text-yellow-300"
+              >
+                <li>Don’t just read → understand definitions</li>
+                <li>Practice “explain in your own words”</li>
+                <li>
+                  Expect: Definitions, Differences, Advantages/disadvantages,
+                  Diagrams
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer
+      class="bg-white dark:bg-darkcard border-t border-slate-200 dark:border-slate-700 py-6 mt-auto"
+    >
+      <div
+        class="container mx-auto px-4 text-center text-slate-500 dark:text-slate-400 text-sm"
+      >
+        <p>
+          &copy; 2023 DevPrep Simulator. Software Engineering Exam Practice.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Modal: Confirmation -->
+    <div id="modal-confirm" class="fixed inset-0 z-[100] hidden">
+      <div
+        class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+        onclick="app.closeModal()"
+        onkeydown="if(event.key === 'Escape') app.closeModal()"
+        tabindex="-1"
+        role="button"
+      ></div>
+      <div
+        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-darkcard rounded-2xl shadow-2xl p-8 w-full max-w-md border border-slate-200 dark:border-slate-700"
+      >
+        <div class="text-center">
+          <div
+            class="w-16 h-16 bg-warning/10 text-warning rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"
+          >
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Submit Exam?</h3>
+          <p class="text-slate-500 dark:text-slate-400 mb-6">
+            You have answered
+            <span
+              id="confirm-answered"
+              class="font-bold text-slate-800 dark:text-white"
+              >0</span
+            >
+            out of <span id="total-questions-modal">50</span> questions. Are you
+            sure you want to submit?
+          </p>
+          <div class="flex gap-3 justify-center">
+            <button
+              onclick="app.closeModal()"
+              class="px-6 py-2 rounded-lg border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 font-medium"
+            >
+              Cancel
+            </button>
+            <button
+              onclick="app.confirmSubmit()"
+              class="px-6 py-2 rounded-lg bg-success hover:bg-green-700 text-white font-bold shadow-lg shadow-green-500/30"
+            >
+              Yes, Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
