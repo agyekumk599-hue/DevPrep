@@ -1,85 +1,123 @@
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
-      body {
-        font-family: "Inter", sans-serif;
-      }
+body {
+  font-family: "Inter", sans-serif;
+}
 
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-      }
-      .dark ::-webkit-scrollbar-thumb {
-        background: #334155;
-      }
+/* Login Page Background */
+#view-login {
+  position: relative;
+}
 
-      /* Animations */
-      .fade-in {
-        animation: fadeIn 0.3s ease-in-out;
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
+#view-login::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("./images/img 7.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  opacity: 0.3;
+  z-index: -1;
+}
 
-      .slide-in {
-        animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-      @keyframes slideIn {
-        from {
-          transform: translateX(20px);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
+/* Dashboard Background */
+body:has(#view-dashboard:not(.hidden))::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("./images/img.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.22;
+  z-index: 0;
+  pointer-events: none;
+}
 
-      /* Option Selection */
-      .option-card {
-        transition: all 0.2s ease;
-      }
-      .option-card:hover {
-        transform: translateX(4px);
-      }
-      .option-card.selected {
-        border-color: #2563eb;
-        background-color: #eff6ff;
-      }
-      .dark .option-card.selected {
-        background-color: #1e3a8a;
-        border-color: #3b82f6;
-      }
+#view-dashboard {
+  position: relative;
+  z-index: 1;
+}
 
-      /* Timer Pulse */
-      .timer-warning {
-        animation: pulse-red 1s infinite;
-      }
-      @keyframes pulse-red {
-        0% {
-          color: #ef4444;
-        }
-        50% {
-          color: #b91c1c;
-          transform: scale(1.05);
-        }
-        100% {
-          color: #ef4444;
-        }
-      }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in {
+  animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes slideIn {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Option Selection */
+.option-card {
+  transition: all 0.2s ease;
+}
+.option-card:hover {
+  transform: translateX(4px);
+}
+.option-card.selected {
+  border-color: #2563eb;
+  background-color: #eff6ff;
+}
+.dark .option-card.selected {
+  background-color: #1e3a8a;
+  border-color: #3b82f6;
+}
+
+/* Timer Pulse */
+.timer-warning {
+  animation: pulse-red 1s infinite;
+}
+@keyframes pulse-red {
+  0% {
+    color: #ef4444;
+  }
+  50% {
+    color: #b91c1c;
+    transform: scale(1.05);
+  }
+  100% {
+    color: #ef4444;
+  }
+}
